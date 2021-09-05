@@ -16,8 +16,153 @@
 
   <title>여기에 진스타그램 만들꺼임 </title>
 </head>
+
+<style>
+.main_body {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    background-color: #FAFAFA;
+}
+
+.left_body {
+    {#background-color: skyblue;#}
+    margin-right: 100px;
+    width: 500px;
+    height: 2000px;
+    display: flex;
+    flex-direction: column;
+}
+
+.right_body {
+    {#background-color: yellow;#}
+    padding-top: 20px;
+    width: 300px;
+    height: 1000px;
+    left: 72%;
+    position: fixed
+}
+
+.feed_box {
+    background-color: white;
+    width: 480px;
+    margin: 10px;
+    min-height: auto;
+    padding-bottom: 10px;
+}
+
+.feed_img{
+    width: 100%;
+    object-fit: contain;
+}
+
+.feed_content{
+    padding: 0px 10px;
+}
+
+.feed_like{
+    padding: 0px 10px;
+}
+
+.feed_reply{
+    padding: 0px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.feed_txt{
+    font-size: 14px;
+}
+
+
+
+.feed_icon{
+    padding: 5px 5px 0px 5px;
+    display: flex;
+    justify-content: space-between;
+}span{
+     padding-right: 5px;
+}
+
+.feed_name{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.feed_name_txt{
+    font-size: 14px;
+    padding: 0px 10px;
+    font-weight: bold;
+}
+
+.profile_box {
+    width: 40px;
+    height: 40px;
+    border-radius: 70%;
+    overflow: hidden;
+}
+.profile_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.name_content{
+    display: flex;
+    flex-direction: column;
+}
+
+.name_content_txt{
+    font-size: 12px;
+    padding: 0px 10px;
+    font-weight: bold;
+    color: lightgray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 190px;
+}
+
+.big_profile_box {
+    width: 60px;
+    height: 60px;
+    border-radius: 70%;
+    overflow: hidden;
+}
+
+.link_txt{
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.recommend_box {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    align-items: center;
+}
+
+.comment_box{
+    margin: 40px 0 0 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: lightgray;
+    display: flex;
+    flex-direction: column;
+}
+
+</style>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<!-- 상단 내비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom" style="width: 100%;height: 50px;position: fixed;" >
   <div class="container">
     <img style="height: 30px; object-fit: contain"
          src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
@@ -32,6 +177,186 @@
   </div>
 </nav>
 
+<!-- 바디 영역 -->
+<div class="main_body">
+  <div class="left_body">
+    <div class="border feed_box">
+      <div class="feed_name">
+        <div class="profile_box">
+          <img class="profile_img" src="https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/s1080x2048/165180104_277246477102900_6106347261862438192_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=730e14&_nc_ohc=1sN4d8i7rn8AX-7aKYN&_nc_ht=scontent-ssn1-1.xx&oh=5049b7cd176848e330b0f5ea95f28172&oe=615A08D1">
+        </div>
+        <span class="feed_name_txt"> jin.99 </span>
+      </div>
+      <img class="feed_img" src="https://mblogthumb-phinf.pstatic.net/MjAxNzA2MTFfMjc1/MDAxNDk3MTcyMDgyNzEw.ID5RyHWKvsVEW2NS9EQGyRYX7vUaXr7znQeuTrRRmdIg.gK7MD7VhNJPkV4_dueiWer2y-oH7NAAmEklF-6bbYyQg.JPEG.jejubyeol/%EC%97%AC%EB%A6%84%EC%97%90_%EC%A0%9C%EC%A3%BC%EB%8F%84_%EC%82%AC%EC%A7%84%EC%B0%8D%EA%B8%B0_%EC%A2%8B%EC%9D%80%EA%B3%B3.jpg?type=w800">
+
+      <div class="feed_icon">
+        <div>
+          <span class="material-icons-outlined">
+            favorite_border
+          </span>
+          <span class="material-icons-outlined">
+            mode_comment
+          </span>
+          <span class="material-icons-outlined">
+            send
+          </span>
+        </div>
+        <div>
+          <span class="material-icons-outlined">
+            turned_in_not
+          </span>
+        </div>
+      </div>
+      <div class="feed_like">
+        <p class="feed_txt"> <b>좋아요 10개</b></p>
+      </div>
+      <div class="feed_content">
+        <p class="feed_txt"> <b> jin.99 </b> 코로나라서 해외여행을 못가니 최근 제주도 가는사람이 늘고있습니다~ 제주도도 조심해야되는건 마찬가지~!</p>
+      </div>
+      <div class="feed_reply">
+        <span class="feed_txt"> <b> mychew </b> 제주도 가고 싶어요 ㅠㅠ</span>
+        <span class="feed_txt"> <b> cho </b> 제주도  ㄱ ㄱ </span>
+      </div>
+    </div>
+    <div class="border feed_box">
+      <div class="feed_name">
+        <div class="profile_box">
+          <img class="profile_img" src="https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/s1080x2048/165180104_277246477102900_6106347261862438192_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=730e14&_nc_ohc=1sN4d8i7rn8AX-7aKYN&_nc_ht=scontent-ssn1-1.xx&oh=5049b7cd176848e330b0f5ea95f28172&oe=615A08D1">
+        </div>
+        <span class="feed_name_txt"> jin.99 </span>
+      </div>
+      <img class="feed_img" src="https://mblogthumb-phinf.pstatic.net/MjAxNzA2MTFfMjc1/MDAxNDk3MTcyMDgyNzEw.ID5RyHWKvsVEW2NS9EQGyRYX7vUaXr7znQeuTrRRmdIg.gK7MD7VhNJPkV4_dueiWer2y-oH7NAAmEklF-6bbYyQg.JPEG.jejubyeol/%EC%97%AC%EB%A6%84%EC%97%90_%EC%A0%9C%EC%A3%BC%EB%8F%84_%EC%82%AC%EC%A7%84%EC%B0%8D%EA%B8%B0_%EC%A2%8B%EC%9D%80%EA%B3%B3.jpg?type=w800">
+
+      <div class="feed_icon">
+        <div>
+          <span class="material-icons-outlined">
+            favorite_border
+          </span>
+          <span class="material-icons-outlined">
+            mode_comment
+          </span>
+          <span class="material-icons-outlined">
+            send
+          </span>
+        </div>
+        <div>
+          <span class="material-icons-outlined">
+            turned_in_not
+          </span>
+        </div>
+      </div>
+      <div class="feed_like">
+        <p class="feed_txt"> <b>좋아요 10개</b></p>
+      </div>
+      <div class="feed_content">
+        <p class="feed_txt"> <b> jin.99 </b> 코로나라서 해외여행을 못가니 최근 제주도 가는사람이 늘고있습니다~ 제주도도 조심해야되는건 마찬가지~!</p>
+      </div>
+      <div class="feed_reply">
+        <span class="feed_txt"> <b> mychew </b> 제주도 가고 싶어요 ㅠㅠ</span>
+        <span class="feed_txt"> <b> cho </b> 제주도  ㄱ ㄱ </span>
+      </div>
+    </div>
+  </div>
+  <div class="right_body">
+    <div class="feed_name" style="justify-content: space-between">
+      <div style="display: flex; align-items: center; ">
+        <div class="big_profile_box">
+          <img class="profile_img"
+               src="https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/s1080x2048/165180104_277246477102900_6106347261862438192_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=730e14&_nc_ohc=1sN4d8i7rn8AX-7aKYN&_nc_ht=scontent-ssn1-1.xx&oh=5049b7cd176848e330b0f5ea95f28172&oe=615A08D1">
+        </div>
+        <div class="name_content">
+          <span class="feed_name_txt"> jin.99 </span>
+          <span class="name_content_txt"> Moon Kyujin</span>
+        </div>
+      </div>
+
+      <a class="link_txt" >
+        전환
+      </a>
+    </div>
+
+    <div class="recommend_box">
+      <span style="color: gray"> 회원님을 위한 추천</span>
+      <span style="font-size: 12px"> 모두 보기 </span>
+    </div>
+    <div>
+      <div class="feed_name" style="justify-content: space-between">
+        <div class="profile_box">
+          <img class="profile_img"
+               src="https://i.pinimg.com/736x/93/a6/8b/93a68b57a54e4bdc73d43d1d049b94b3.jpg">
+        </div>
+        <div class="name_content">
+          <span class="feed_name_txt"> dation3388 </span>
+          <span class="name_content_txt"> Jinstargram 신규가입</span>
+        </div>
+        <a class="link_txt">
+          팔로우
+        </a>
+      </div>
+      <div class="feed_name" style="justify-content: space-between">
+        <div class="profile_box">
+          <img class="profile_img"
+               src="http://file3.instiz.net/data/cached_img/upload/2021/01/27/18/2ce2f41f7e9f09c0acc77faac7452dbf.jpg">
+        </div>
+        <div class="name_content">
+          <span class="feed_name_txt"> gaoudi </span>
+          <span class="name_content_txt"> IU 외 5명이 팔로우</span>
+        </div>
+        <a class="link_txt">
+          팔로우
+        </a>
+      </div>
+      <div class="feed_name" style="justify-content: space-between">
+        <div class="profile_box">
+          <img class="profile_img"
+               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTiCVWdogd6Ocsm08kL8ph4sb1MN0AYEiSUQ&usqp=CAU">
+        </div>
+        <div class="name_content">
+          <span class="feed_name_txt"> CAU </span>
+          <span class="name_content_txt"> IU 외 5명이 팔로우</span>
+        </div>
+        <a class="link_txt">
+          팔로우
+        </a>
+      </div>
+      <div class="feed_name" style="justify-content: space-between">
+        <div class="profile_box">
+          <img class="profile_img"
+               src="https://pbs.twimg.com/media/EhzH0_DU4AEZ9yr.jpg">
+        </div>
+        <div class="name_content">
+          <span class="feed_name_txt"> 123456789 </span>
+          <span class="name_content_txt"> 그냥 추천해봄 </span>
+        </div>
+        <a class="link_txt">
+          팔로우
+        </a>
+      </div>
+      <div class="feed_name" style="justify-content: space-between">
+        <div class="profile_box">
+          <img class="profile_img"
+               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPNYM5RQgA2F7BtpBQ-OrNFKDXVDUpypRuw&usqp=CAU">
+        </div>
+        <div class="name_content">
+          <span class="feed_name_txt"> instiz </span>
+          <span class="name_content_txt"> 애도 유명해 </span>
+        </div>
+        <a class="link_txt">
+          팔로우
+        </a>
+      </div>
+    </div>
+    <div class="comment_box">
+      <span> 인스타그램 클론 코딩 </span>
+      <span> https://cholol.tistory.com </span>
+      <br>
+      <span> @2021 Jin.99 </span>
+
+    </div>
+  </div>
+</div>
+
+
 
 <!-- Optional JavaScript; choose one of the two! -->
 
@@ -45,5 +370,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
 -->
+
 </body>
 </html>
