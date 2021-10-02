@@ -167,7 +167,7 @@
     }
 
 
-    .modal_overlay {
+    .modal {
         width: 100%;
         height: 100%;
         position: absolute;
@@ -191,7 +191,6 @@
         width: 800px;
         height: 600px;
         position: relative;
-        padding: 10px;
     }
 
     .modal_title{
@@ -200,9 +199,11 @@
         justify-content: space-between;
         font-weight: bold;
         font-size: 20px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.18);
     }
 
     .modal_title_side{
+        margin: 5px;
         flex: 0 0 40px;
         text-align: center;
     }
@@ -210,10 +211,37 @@
     .modal_image_upload{
         outline: 2px dashed black ;
         outline-offset:-10px;
+        transition: all .15s ease-in-out;
+        width: 798px;
+        height: 548px;
+        text-align: center;
+        line-height: 548px;
+    }
+
+    .modal_image_upload_content{
+        outline: 2px dashed black ;
+        outline-offset:-10px;
         text-align: center;
         transition: all .15s ease-in-out;
-        width:780px;
+        width:500px;
         height: 548px;
+    }
+
+    .modal_image_content{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .modal_content_write{
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid rgba(0, 0, 0, 0.18);;
+    }
+
+    .feed_content_textarea{
+        resize: none;
+        width: 294px;
+        border: none;
     }
 
 
@@ -229,7 +257,7 @@
                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
             <input class="form-control" style="width: 200px" type="search" placeholder="Search" aria-label="Search">
             <div>
-                <span class="material-icons">home</span>
+                <span id="move_home" class="material-icons">home</span>
                 <span class="material-icons">send</span>
                 <span id="add_feed" class="material-icons-outlined">add_box</span>
                 <span class="material-icons-outlined">explore</span>
@@ -382,20 +410,55 @@
 
 
 </div>
-<div id="modal_add_feed" class="modal_overlay">
+<div id="modal_add_feed" class="modal modal_overlay">
     <div class="modal_window">
         <div class="modal_title">
             <div class="modal_title_side"></div>
             <div> 새 게시물 </div>
             <div class="modal_title_side">
-                <span id="close_modal" class="material-icons-outlined">
+                <span id="close_modal" class="close_modal material-icons-outlined" style="font-size: 30px">
                     close
                 </span>
             </div>
         </div>
         <div class="modal_image_upload">
+            <span style="text-align: center"> 사진을 여기에 끌어다 놓으세요. </span>
 
         </div>
+    </div>
+</div>
+
+<div id="modal_add_feed_content" class="modal modal_overlay_content">
+    <div class="modal_window">
+        <div class="modal_title">
+            <div class="modal_title_side"></div>
+            <div style="margin: 5px"> 새 게시물 </div>
+            <div class="modal_title_side">
+                <span id="close_modal" class="close_modal material-icons-outlined" style="font-size: 30px">
+                    close
+                </span>
+            </div>
+        </div>
+        <div class="modal_image_content">
+            <div class="modal_image_upload_content">
+
+            </div>
+            <div class="modal_content_write">
+                <div class="feed_name">
+                    <div class="profile_box">
+                        <img class="profile_img" src="https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/s1080x2048/165180104_277246477102900_6106347261862438192_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=730e14&_nc_ohc=1sN4d8i7rn8AX-7aKYN&_nc_ht=scontent-ssn1-1.xx&oh=5049b7cd176848e330b0f5ea95f28172&oe=615A08D1">
+                    </div>
+                    <span class="feed_name_txt"> jin.99 </span>
+                </div>
+                <div style="height: 440px">
+                    <textarea class="feed_content_textarea form-control col-sm-5" rows="10" placeholder="설명을 입력하세요..."></textarea>
+                </div>
+                <div style="width: 100%; text-align: center">
+                    <button type="button" class="btn btn-primary" style="width: 268px"> 공유하기</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -410,14 +473,26 @@
         document.body.style.overflowY = "hidden"; // 스크롤 없애기
     });
 
-    // 모달 닫기 코드
-    const buttonCloseModal = document.getElementById("close_modal");
-    buttonCloseModal.addEventListener("click", e => {
-        modal.style.display = "none";
-        document.body.style.overflowY = "visible";
+<!-- jquery 부분 -->
+
+    $('.close_modal').on("click", () => {
+        $('.modal').css({
+            display : 'none'
+        });
+        $(document.body).css({
+            overflowY : 'visible'
+        })
     });
 
-<!-- jquery 부분 -->
+    $('#move_home').on("click",() =>{
+        $('#modal_add_feed_content').css({
+            top : window.pageYOffset + 'px',
+            display : 'flex'
+        });
+        $(document.body).css({
+            overflowY : "hidden"
+        });
+    });
 
     $('.modal_image_upload')
         .on("dragover", dragOver)
@@ -456,10 +531,23 @@
         }
 
         if (files[0].type.match(/image.*/)) {
-            $(e.target).css({
+            {#$(e.target).css({#}
+            {#    "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",#}
+            {#    "outline": "none",#}
+            {#    "background-size": "100% 100%"});#}
+            $('#modal_add_feed_content').css({
+                display : 'flex'
+            });
+            $('.modal_image_upload_content').css({
                 "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
                 "outline": "none",
-                "background-size": "100% 100%"});
+                "background-size": "contain",
+                "background-repeat" : "no-repeat",
+                "background-position" : "center"
+            });
+            $('#modal_add_feed').css({
+                display: 'none'
+            })
         }else{
             alert('이미지가 아닙니다.');
             return;
