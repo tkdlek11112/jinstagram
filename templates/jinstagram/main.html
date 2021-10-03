@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    {% load static %}
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -248,6 +249,7 @@
 </style>
 
 <body>
+
 <div style="min-width: 1024px">
     <!-- 상단 내비게이션 바 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom"
@@ -277,7 +279,7 @@
                         </div>
                         <span class="feed_name_txt"> {{ feed.user_id }}</span>
                     </div>
-                    <img class="feed_img" src="{{ feed.image }}">
+                    <img class="feed_img" src="{% get_media_prefix %}{{ feed.image }}">
 
                     <div class="feed_icon">
                         <div>
@@ -440,21 +442,21 @@
             </div>
         </div>
         <div class="modal_image_content">
-            <div class="modal_image_upload_content">
+            <div id="input_image" class="modal_image_upload_content">
 
             </div>
             <div class="modal_content_write">
                 <div class="feed_name">
                     <div class="profile_box">
-                        <img class="profile_img" src="https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/s1080x2048/165180104_277246477102900_6106347261862438192_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=730e14&_nc_ohc=1sN4d8i7rn8AX-7aKYN&_nc_ht=scontent-ssn1-1.xx&oh=5049b7cd176848e330b0f5ea95f28172&oe=615A08D1">
+                        <img id="input_profile_image" class="profile_img" src="https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/s1080x2048/165180104_277246477102900_6106347261862438192_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=730e14&_nc_ohc=1sN4d8i7rn8AX-7aKYN&_nc_ht=scontent-ssn1-1.xx&oh=5049b7cd176848e330b0f5ea95f28172&oe=615A08D1">
                     </div>
-                    <span class="feed_name_txt"> jin.99 </span>
+                    <span id="input_user_id" class="feed_name_txt"> jin.99 </span>
                 </div>
                 <div style="height: 440px">
-                    <textarea class="feed_content_textarea form-control col-sm-5" rows="10" placeholder="설명을 입력하세요..."></textarea>
+                    <textarea id="input_content" class="feed_content_textarea form-control col-sm-5" rows="10" placeholder="설명을 입력하세요..."></textarea>
                 </div>
                 <div style="width: 100%; text-align: center">
-                    <button type="button" class="btn btn-primary" style="width: 268px"> 공유하기</button>
+                    <button id="button_write_feed" type="button" class="btn btn-primary" style="width: 268px"> 공유하기</button>
                 </div>
             </div>
         </div>
@@ -476,23 +478,27 @@
 <!-- jquery 부분 -->
 
     $('.close_modal').on("click", () => {
+        closeModal();
+    });
+
+    $('#move_home').on("click",() =>{
+        $('#modal_add_feed_content').css({
+            top: window.pageYOffset + 'px',
+            display: 'flex'
+        });
+        $(document.body).css({
+            overflowY: "hidden"
+        });
+    });
+
+    function closeModal() {
         $('.modal').css({
             display : 'none'
         });
         $(document.body).css({
             overflowY : 'visible'
-        })
-    });
-
-    $('#move_home').on("click",() =>{
-        $('#modal_add_feed_content').css({
-            top : window.pageYOffset + 'px',
-            display : 'flex'
         });
-        $(document.body).css({
-            overflowY : "hidden"
-        });
-    });
+    };
 
     $('.modal_image_upload')
         .on("dragover", dragOver)
@@ -514,8 +520,9 @@
                 "outline-offset": "-10px"
             });
         }
-    }
+    };
 
+    let files;
     function uploadFiles(e){
         e.stopPropagation();
         e.preventDefault();
@@ -524,7 +531,7 @@
 
         e.dataTransfer = e.originalEvent.dataTransfer;
 
-        var files = e.dataTransfer.files;
+        files = e.dataTransfer.files;
         if (files.length > 1) {
             alert('하나만 올려라.');
             return;
@@ -552,9 +559,66 @@
             alert('이미지가 아닙니다.');
             return;
         }
+    };
 
-    }
+    $('#button_write_feed').on('click', ()=>{
+        const image = $('#input_image').css("background-image").replace(/^url\(['"](.+)['"]\)/, '$1');
+        const content = $('#input_content').val();
+        const profile_image = $('#input_profile_image').attr('src');
+        const user_id = $('#input_user_id').text();
 
+        const file = files[0];
+
+        let fd = new FormData();
+
+        fd.append('file', file);
+        fd.append('image', image);
+        fd.append('content', content);
+        fd.append('profile_image', profile_image);
+        fd.append('user_id', user_id);
+
+        if(image.length <= 0)
+        {
+            alert("이미지가 비어있습니다.");
+        }
+        else if(content.length <= 0)
+        {
+            alert("설명을 입력하세요");
+        }
+        else if(profile_image.length <= 0)
+        {
+            alert("프로필 이미지가 비어있습니다.");
+        }
+        else if(user_id.length <= 0)
+        {
+            alert("사용자 id가 없습니다.");
+        }
+        else{
+            writeFeed(fd);
+            console.log(files[0]);
+        }
+    });
+
+    function writeFeed(fd) {
+        $.ajax({
+            url: "/content/upload",
+            data: fd,
+            method: "POST",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("성공");
+            },
+            error: function (request, status, error) {
+                console.log("에러");
+            },
+            complete: function() {
+                console.log("무조건실행");
+                closeModal();
+                location.reload();
+            }
+        })
+    };
 </script>
 
 
