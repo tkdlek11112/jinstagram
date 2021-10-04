@@ -30,3 +30,8 @@ class UploadFeed(APIView):
         Feed.objects.create(content=content, image=image, profile_image=profile_image, user_id=user_id, like_count=0)
 
         return Response(status=200)
+
+
+class Login(APIView):
+    def get(self, request):
+        return render(request, 'user/login.html')
