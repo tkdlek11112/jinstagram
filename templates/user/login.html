@@ -11,43 +11,61 @@
 
     <title>Jinstagram login</title>
 </head>
-<body style="background-color: gray">
-<div style="display: flex; flex-direction: column; align-items: center">
-    <div style="background-color: white">
-        <div>
-            jinstagram
+<style>
+    .floating_form {
+        margin: 0px 30px;
+    }
+
+    .floating_label {
+        margin-top: -4px;
+        font-size: 14px;
+    }
+
+    .floating_input {
+        height: 50px !important;
+        padding-top: 20px !important;
+        font-size: 14px !important;
+    }
+
+</style>
+<body style="background-color: #FAFAFA;height: 100%">
+<div style="font-size: 14px;text-align: center;width: 100%;min-height: 100vh;display: flex; flex-direction: row; align-items: center; justify-content: center">
+    <div>
+        <div class="mb-3" style="background-color: white; width: 350px; height: 380px; border: 1px solid rgba(0, 0, 0, 0.18);">
+            <div style="display: flex;align-items: center;justify-content: center">
+                <img style="height: 50px; object-fit: contain; margin: 30px 0"
+                     src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
+            </div>
+            <div class="form-floating mb-2 floating_form">
+                <input type="email" class="floating_input form-control" id="floatingInput"
+                       placeholder="name@example.com">
+                <label for="floatingInput" class="floating_label">Email address</label>
+            </div>
+            <div class="form-floating mb-3 floating_form">
+                <input type="password" class="floating_input form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword" class="floating_label">Password</label>
+            </div>
+            <div class="floating_form mb-3">
+                <button type="button" class="btn btn-primary" style="width: 100%"> 로그인</button>
+            </div>
+            <div class="mb-2" style="display: flex; align-items: center; justify-content: space-between">
+                <hr style="border:1px silver;margin-left: 30px;width: 100px">
+                또는
+                <hr style="border:1px silver;margin-right: 30px;width: 100px">
+            </div>
+            <div style="font-weight: bold; color: royalblue">
+                테스트로 로그인 (둘러보기)
+            </div>
         </div>
-        <div>
-            친구들의 사진과 동영상을 보려면 가입하세요.
-        </div>
-        <div>
-            ----- 또는 ------
-        </div>
-        <div>
-            휴대폰 번호 또는 이메일 주소
-        </div>
-        <div>
-            성명
-        </div>
-        <div>
-            사용자이름
-        </div>
-        <div>
-            비밀번호
-        </div>
-        <div>
-            가입
-        </div>
-        <div>
-            계정이 있으신가요? 로그인
-        </div>
-        <div>
-            테스트로 둘러보기
-        </div>
-        <div>
-            이것 저것 기타 텍스트
+
+        <div style="background-color: white; width: 350px; height: 70px; border: 1px solid rgba(0, 0, 0, 0.18);">
+            <div style="margin-top: 25px">
+                계정이 없으신가요? <span style="font-weight: bold; color: cornflowerblue">가입하기</span>
+            </div>
         </div>
     </div>
+
+
 </div>
 
 
