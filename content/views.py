@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from content.models import Feed, Reply
+from content.models import Feed, Reply, FeedLike
 from rest_framework.response import Response
 from user.models import User
 from rest_framework.response import Response
@@ -31,14 +31,24 @@ class LikeFeed(APIView):
     def post(self, request):
         feed_id = request.data.get('feed_id')
         email = request.data.get('email')
-        is_like = request.data.get('is_like', True)
+        is_like = request.data.get('is_like', 'True')
 
-        Reply.objects.create(feed_id=feed_id,
-                             email=email,
-                             is_like=is_like,
-                             )
+        if is_like.lower() == 'false':
+            is_like = False
+        else:
+            is_like = True
+        feed_like = FeedLike.objects.filter(feed_id=feed_id, email=email).first()
 
-        return Response(status=200, data=dict(message='성공'))
+        if feed_like is None:
+            FeedLike.objects.create(feed_id=feed_id,
+                                    email=email,
+                                    is_like=is_like,
+                                    )
+        else:
+            feed_like.is_like = is_like
+            feed_like.save()
+
+        return Response(status=200, data=dict(message='피드 좋아요 완료.'))
 
 
 class CreateReply(APIView):
@@ -53,7 +63,7 @@ class CreateReply(APIView):
                              email=email
                              )
 
-        return Response(status=200, data=dict(message='성공'))
+        return Response(status=200, data=dict(message='댓글 작성 완료.'))
 
 
 class DeleteReply(APIView):

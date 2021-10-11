@@ -257,6 +257,7 @@
     .navi_icons {
         padding-right: 18px;
         font-size: 28px;
+        cursor: pointer;
     }
 
     .feed_reply_write{
@@ -283,7 +284,9 @@
                 <span id="move_home" class="material-icons navi_icons">home</span>
                 <span id="add_feed" class="material-icons-outlined navi_icons">add_box</span>
                 <span class="material-icons-outlined navi_icons">explore</span>
-                <span class="material-icons-outlined navi_icons">favorite_border</span>
+                <span class="material-icons-outlined navi_icons ">
+                    favorite_border
+                </span>
                 <div class="dropdown" style="position: relative; z-index: 9999">
                     <div class="navi_profile_box" id="dropdownMenuButton1"
                          data-bs-toggle="dropdown" aria-expanded="false">
@@ -293,8 +296,7 @@
 
                     <ul class="dropdown-menu" style="left: -130px" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="#">프로필</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="#">저장됨</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -319,8 +321,12 @@
                     <img class="feed_img" src="{% get_media_prefix %}{{ feed.image }}">
                     <div class="feed_icon">
                         <div>
-                            <span class="material-icons-outlined">
-                                favorite_border
+                            <span class="favorite_icon material-icons-outlined" feed_id="{{ feed.id }}">
+                                {% if feed.is_like %}
+                                    favorite
+                                {% else %}
+                                    favorite_border
+                                {% endif %}
                             </span>
                             <span class="material-icons-outlined">
                                 mode_comment
@@ -333,17 +339,18 @@
                         </div>
                     </div>
                     <div class="feed_like">
-                        <p class="feed_txt"><b>좋아요 {{ feed.like_count }}개</b></p>
+                        <p class="feed_txt"><b>좋아요 <span>{{ feed.like_count }}</span>개</b></p>
                     </div>
                     <div class="feed_content">
                         <p class="feed_txt"><b> {{ feed.user_id }} </b> {{ feed.content }}</p>
                     </div>
                     <div class="feed_reply">
-                        <span class="feed_txt"> <b> mychew </b> 댓글은 아직 모델을 안만들어서 </span>
-                        <span class="feed_txt"> <b> cho </b> 항상 이 두개가 나옵니다 ㅋㅋ </span>
+                        {% for reply in feed.reply_list %}
+                            <span class="feed_txt"> <b> {{ reply.user_id }} </b> {{ reply.content }} </span>
+                        {% endfor %}
                     </div>
                     <div class="feed_reply_write">
-                        <input type="text" class="floating_input form-control" style="border: none" id="floatingName" placeholder="댓글 달기...">
+                        <input type="text" class="write_reply_input floating_input form-control" style="border: none" id="floatingName" placeholder="댓글 달기...">
                         <span class="write_reply" feed_id="{{ feed.id }}" style="width: 60px; font-size: 16px; color: deepskyblue;font-weight: bold"> 게시 </span>
                     </div>
                 </div>
@@ -550,21 +557,67 @@
         if(success == true){
             $(this).parent().prev().append('<span class="feed_txt"><b> {{ user.user_id }} </b> '+ content +' </span>');
         }
-
     });
+
+    <!-- @@@좋아요 누르기 -->
+    $('.favorite_icon').click(function () {
+        console.log($(this).prev().val());
+        console.log($(this).attr('feed_id'));
+        let success = false;
+        let icon = $.trim($(this).html());
+        console.log('지금현재 상태 : ' + icon);
+        let is_like = false;
+        if( icon == 'favorite_border'){
+            is_like = true;
+        }
+        let feed_id = Number($(this).attr('feed_id'));
+
+        $.ajax({
+            url: "/content/like",
+            data: {
+                email: '{{ user.email }}',
+                is_like: is_like,
+                feed_id: feed_id
+            },
+            method: "POST",
+            dataType: "json",
+            async: false,
+            success: function (data){
+                alert(data.message);
+                success=true
+            },
+            error:function (request, status, error){
+                let data = JSON.parse(request.responseText);
+                console.log(data.message);
+                alert(data.message);
+            }
+        });
+        console.log(success)
+        if(success == true){
+            console.log(is_like)
+            if(is_like){
+                $(this).html('favorite');
+                let like_count_object = $(this).parent().parent().next().find('p').find('span');
+                let like_count = Number(like_count_object.html());
+                like_count_object.html(like_count + 1);
+                console.log(like_count);
+            }else{
+                $(this).html('favorite_border');
+                let like_count_object = $(this).parent().parent().next().find('p').find('span');
+                let like_count = Number(like_count_object.html());
+                like_count_object.html(like_count - 1);
+                console.log(like_count);
+            }
+        }
+    });
+
 
     $('.close_modal').on("click", () => {
         closeModal();
     });
 
     $('#move_home').on("click", () => {
-        $('#modal_add_feed_content').css({
-            top: window.pageYOffset + 'px',
-            display: 'flex'
-        });
-        $(document.body).css({
-            overflowY: "hidden"
-        });
+        location.replace('/');
     });
 
     function closeModal() {
