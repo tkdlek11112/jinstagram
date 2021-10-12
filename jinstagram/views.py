@@ -38,4 +38,7 @@ class Main(APIView):
                                    user=user))
 
 
+class Profile(APIView):
+    def get(self, request):
+        return render(request, 'jinstagram/profile.html')
 
