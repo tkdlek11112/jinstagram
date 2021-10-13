@@ -295,7 +295,7 @@
                     </div>
 
                     <ul class="dropdown-menu" style="left: -130px" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">프로필</a></li>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">프로필</a></li>
                         <li><a class="dropdown-item" href="#">저장됨</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -691,8 +691,8 @@
         const image = $('#input_image').css("background-image").replace(/^url\(['"](.+)['"]\)/, '$1');
         const content = $('#input_content').val();
         const profile_image = $('#input_profile_image').attr('src');
-        const user_id = $('#input_user_id').text();
-        const email = $('#input_email').text();
+        const user_id = $.trim($('#input_user_id').text());
+        const email = $.trim($('#input_email').text());
 
         const file = files[0];
 

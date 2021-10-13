@@ -26,63 +26,13 @@
         display: flex;
         justify-content: center;
         padding-top: 50px;
-        background-color: #FAFAFA;
         z-index: 1;
+        background-color: #FAFAFA;
     }
-
-    .left_body {
-    {#background-color: skyblue;#} margin-right: 100px;
-        width: 600px;
-        height: 2000px;
+    .sub_body{
         display: flex;
+        justify-content: center;
         flex-direction: column;
-    }
-
-    .right_body {
-    {#background-color: yellow;#} padding-top: 20px;
-        width: 300px;
-        height: 1000px;
-        left: 72%;
-        position: fixed;
-    }
-
-    .feed_box {
-        background-color: white;
-        width: 580px;
-        margin: 10px;
-        min-height: auto;
-        padding-bottom: 10px;
-    }
-
-    .feed_img {
-        width: 100%;
-        object-fit: contain;
-    }
-
-    .feed_content {
-        padding: 0px 10px;
-    }
-
-    .feed_like {
-        padding: 0px 10px;
-    }
-
-    .feed_reply {
-        padding: 0px 10px;
-        display: flex;
-        flex-direction: column;
-    }
-
-
-    .feed_txt {
-        font-size: 14px;
-    }
-
-
-    .feed_icon {
-        padding: 5px 5px 0px 5px;
-        display: flex;
-        justify-content: space-between;
     }
 
     span {
@@ -93,6 +43,13 @@
         padding: 10px;
         display: flex;
         align-items: center;
+    }
+
+    .row_feed {
+        width: 240px;
+        height: 240px;
+        object-fit: cover;
+        margin: 10px;
     }
 
     .feed_name_txt {
@@ -121,61 +78,6 @@
         height: 100%;
         object-fit: cover;
     }
-
-    .name_content {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .name_content_txt {
-        font-size: 12px;
-        padding: 0px 10px;
-        font-weight: bold;
-        color: lightgray;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 190px;
-    }
-
-    .big_profile_box {
-        width: 60px;
-        height: 60px;
-        border-radius: 70%;
-        overflow: hidden;
-    }
-
-    .link_txt {
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-        text-decoration: none;
-    }
-
-    .recommend_box {
-        display: flex;
-        justify-content: space-between;
-        padding: 5px;
-        font-size: 14px;
-        font-weight: bold;
-        align-items: center;
-    }
-
-    .comment_box {
-        margin: 40px 0 0 5px;
-        font-size: 12px;
-        font-weight: bold;
-        color: lightgray;
-        display: flex;
-        flex-direction: column;
-    }
-
-    @media screen and (max-width: 1280px) {
-        .right_body {
-            display: none;
-        }
-    }
-
 
     .modal {
         width: 100%;
@@ -260,13 +162,13 @@
         cursor: pointer;
     }
 
-    .feed_reply_write{
-        margin-top: 10px;
-        border-top: 1px solid silver;
-        display: flex;
-        align-items: center;
+    .big_profile_box {
+        width: 150px;
+        height: 150px;
+        border-radius: 70%;
+        overflow: hidden;
+        margin: 30px;
     }
-
 
 </style>
 
@@ -309,18 +211,57 @@
 
     <!-- 바디 영역 -->
     <div class="main_body">
-        <div style="display: flex; flex-direction: row">
-            <div>프사</div>
-            <div style="display: flex; flex-direction: column">
-                <div style="display: flex; flex-direction: row">
-                    <div> 사용자 아이디 </div>
-                    <div> 프로필 편집 버튼</div>
+        <div class="sub_body">
+            <!-- 프로필 영역 -->
+            <div style="display: flex; flex-direction: row">
+                <div class="big_profile_box">
+                    <img class="profile_img"
+                         src="{% get_media_prefix %}{{ user.thumbnail }}">
                 </div>
-                <div style="display: flex; flex-direction: row">
-                    <div> 사용자 아이디 </div>
-                    <div> 프로필 편집 버튼</div>
-                </div>
+                <div style="display: flex; flex-direction: column; margin: 40px 60px">
+                    <div class="mb-3" style="display: flex; flex-direction: row;">
+                        <div style="font-size: 24px"> {{ user.user_id }} </div>
+                        <div>
+                            <button id="button_write_feed" type="button"
+                                    style="margin-left: 10px;font-size: 14px;width: 100px; border: 1px solid silver; background-color: transparent">
+                                프로필 편집
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
+                        <div style="margin-right: 30px"> 게시물 <span style="font-weight: bold"> 99 </span></div>
+                        <div style="margin-right: 30px"> 팔로워 <span style="font-weight: bold"> 100 </span></div>
+                        <div style="margin-right: 30px"> 팔로우 <span style="font-weight: bold"> 100 </span></div>
+                    </div>
+                    <div style="display: flex; flex-direction: row">
+                        <div style="font-size: 18px;font-weight: bold"> {{ user.name }} </div>
+                    </div>
 
+                </div>
+            </div>
+            <!-- 중앙 메뉴 -->
+            <div style="font-size: 14px;padding: 16px 140px;border-top: 2px solid silver; display: flex;width: 100%; flex-direction: row; justify-content: space-evenly">
+                <div style="display: flex; flex-direction: row; align-items: center"> <span class="material-icons-outlined" style="font-size: 16px">
+grid_on
+</span> 게시물 </div>
+                <div style="display: flex; flex-direction: row; align-items: center"> <span class="material-icons-outlined" style="font-size: 16px">
+bookmark_border
+</span> 저장됨 </div>
+                <div style="display: flex; flex-direction: row; align-items: center"> <span class="material-icons-outlined" style="font-size: 16px">
+assignment_ind
+</span>태그됨 </div>
+            </div>
+            <!-- 하단 컨텐츠 -->
+            <div style="display: flex; flex-direction: column">
+                {% for feed in feed_list %}
+                    <div style="display: flex; flex-direction: row">
+                        {% for row_feed in feed.row_feed_list %}
+                            <div>
+                                <img class="row_feed" src="{% get_media_prefix %}{{ row_feed.image }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -415,19 +356,19 @@
             method: "POST",
             dataType: "json",
             async: false,
-            success: function (data){
+            success: function (data) {
                 alert(data.message);
-                success=true
+                success = true
             },
-            error:function (request, status, error){
+            error: function (request, status, error) {
                 let data = JSON.parse(request.responseText);
                 console.log(data.message);
                 alert(data.message);
             }
         });
         console.log(success)
-        if(success == true){
-            $(this).parent().prev().append('<span class="feed_txt"><b> {{ user.user_id }} </b> '+ content +' </span>');
+        if (success == true) {
+            $(this).parent().prev().append('<span class="feed_txt"><b> {{ user.user_id }} </b> ' + content + ' </span>');
         }
     });
 
@@ -439,7 +380,7 @@
         let icon = $.trim($(this).html());
         console.log('지금현재 상태 : ' + icon);
         let is_like = false;
-        if( icon == 'favorite_border'){
+        if (icon == 'favorite_border') {
             is_like = true;
         }
         let feed_id = Number($(this).attr('feed_id'));
@@ -454,26 +395,26 @@
             method: "POST",
             dataType: "json",
             async: false,
-            success: function (data){
+            success: function (data) {
                 alert(data.message);
-                success=true
+                success = true
             },
-            error:function (request, status, error){
+            error: function (request, status, error) {
                 let data = JSON.parse(request.responseText);
                 console.log(data.message);
                 alert(data.message);
             }
         });
         console.log(success)
-        if(success == true){
+        if (success == true) {
             console.log(is_like)
-            if(is_like){
+            if (is_like) {
                 $(this).html('favorite');
                 let like_count_object = $(this).parent().parent().next().find('p').find('span');
                 let like_count = Number(like_count_object.html());
                 like_count_object.html(like_count + 1);
                 console.log(like_count);
-            }else{
+            } else {
                 $(this).html('favorite_border');
                 let like_count_object = $(this).parent().parent().next().find('p').find('span');
                 let like_count = Number(like_count_object.html());
