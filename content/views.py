@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from content.models import Feed, Reply, FeedLike
+from content.models import Feed, Reply, FeedLike, Bookmark
 from rest_framework.response import Response
 from user.models import User
 from rest_framework.response import Response
@@ -81,3 +81,27 @@ class DeleteReply(APIView):
             return Response(status=200, data=dict(message='성공'))
         else:
             return Response(status=500, data=dict(message='삭제 실패'))
+
+
+class BookmarkFeed(APIView):
+    def post(self, request):
+        feed_id = request.data.get('feed_id')
+        email = request.data.get('email')
+        is_bookmarked = request.data.get('is_bookmarked', 'True')
+
+        if is_bookmarked.lower() == 'false':
+            is_bookmarked = False
+        else:
+            is_bookmarked = True
+        bookmark = Bookmark.objects.filter(feed_id=feed_id, email=email).first()
+
+        if bookmark is None:
+            Bookmark.objects.create(feed_id=feed_id,
+                                    email=email,
+                                    is_bookmarked=is_bookmarked,
+                                    )
+        else:
+            bookmark.is_bookmarked = is_bookmarked
+            bookmark.save()
+
+        return Response(status=200, data=dict(message='북마크 설정 완료.'))

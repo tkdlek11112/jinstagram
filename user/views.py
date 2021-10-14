@@ -7,6 +7,7 @@ from uuid import uuid4
 import os
 from jinstagram.settings import MEDIA_ROOT
 
+
 class Login(APIView):
     def get(self, request):
         return render(request, 'user/login.html')
@@ -78,7 +79,7 @@ class UpdateProfile(APIView):
         file = request.FILES['file']
         if file is None:
             return Response(status=500)
-        
+
         uuid_name = uuid4().hex
         save_path = os.path.join(MEDIA_ROOT, uuid_name)
         with open(save_path, 'wb+') as destination:

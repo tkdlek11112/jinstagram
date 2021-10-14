@@ -34,3 +34,14 @@ class FeedLike(models.Model):
             models.Index(fields=['feed_id']),
             models.Index(fields=['email']),
         ]
+
+
+class Bookmark(models.Model):
+    email = models.EmailField(verbose_name='email', max_length=100)
+    feed_id = models.IntegerField()
+    is_bookmarked = models.BooleanField(default=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['email'])
+        ]

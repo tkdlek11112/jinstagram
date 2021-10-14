@@ -33,6 +33,7 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+        min-width: 780px;
     }
 
     span {
@@ -179,11 +180,11 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom"
          style="width: 100%;height: 50px;position: fixed;z-index: 9999">
         <div class="container" style="min-width: 800px">
-            <img style="height: 30px; object-fit: contain"
+            <img class="go_home" style="height: 30px; object-fit: contain;cursor: pointer"
                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
             <input class="form-control" style="width: 200px" type="search" placeholder="Search" aria-label="Search">
             <div style="display: flex; flex-direction: row; align-items: center; ">
-                <span id="move_home" class="material-icons navi_icons">home</span>
+                <span class="material-icons navi_icons go_home">home</span>
                 <span id="add_feed" class="material-icons-outlined navi_icons">add_box</span>
                 <span class="material-icons-outlined navi_icons">explore</span>
                 <span class="material-icons-outlined navi_icons ">
@@ -223,18 +224,16 @@
                         <div style="font-size: 24px"> {{ user.user_id }} </div>
                         <div>
                             <button id="button_write_feed" type="button"
-                                    style="margin-left: 10px;font-size: 14px;width: 100px; border: 1px solid silver; background-color: transparent" onclick="ajaxFileUpload()">
-                                프로필 편집
+                                    style="margin-left: 10px;font-size: 14px;width: 120px; border: 1px solid silver; background-color: transparent" onclick="ajaxFileUpload()">
+                                프로필사진 변경
                             </button>
                             <input id="ajaxFile" type="file" onchange="ajaxFileChange()" name="profile" style="display: none">
-
-
                         </div>
                     </div>
                     <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
-                        <div style="margin-right: 30px"> 게시물 <span style="font-weight: bold"> 99 </span></div>
-                        <div style="margin-right: 30px"> 팔로워 <span style="font-weight: bold"> 100 </span></div>
-                        <div style="margin-right: 30px"> 팔로우 <span style="font-weight: bold"> 100 </span></div>
+                        <div style="margin-right: 30px;"> 게시물 <span style="font-weight: bold"> {{ feed_count }} </span></div>
+                        <div style="margin-right: 30px"> 팔로워 <span style="font-weight: bold"> {{ follower_count }} </span></div>
+                        <div style="margin-right: 30px"> 팔로우 <span style="font-weight: bold"> {{ following_count }} </span></div>
                     </div>
                     <div style="display: flex; flex-direction: row">
                         <div style="font-size: 18px;font-weight: bold"> {{ user.name }} </div>
@@ -243,19 +242,41 @@
                 </div>
             </div>
             <!-- 중앙 메뉴 -->
-            <div style="font-size: 14px;padding: 16px 140px;border-top: 2px solid silver; display: flex;width: 100%; flex-direction: row; justify-content: space-evenly">
-                <div style="display: flex; flex-direction: row; align-items: center"> <span class="material-icons-outlined" style="font-size: 16px">
+            <div style="font-size: 14px;padding: 0 140px;border-top: 1px solid silver; display: flex;width: 100%; flex-direction: row; justify-content: space-evenly">
+                <div target_id="menu_feed" class="menu_content" style="display: flex; flex-direction: row; align-items: center;padding-top: 10px; border-top: 1px solid gray;font-weight: bold"> <span class="material-icons-outlined" style="font-size: 16px">
 grid_on
 </span> 게시물 </div>
-                <div style="display: flex; flex-direction: row; align-items: center"> <span class="material-icons-outlined" style="font-size: 16px">
+                <div target_id="menu_bookmark" class="menu_content" style="display: flex; flex-direction: row; align-items: center;padding-top: 10px;font-weight: lighter"> <span class="material-icons-outlined" style="font-size: 16px">
 bookmark_border
 </span> 저장됨 </div>
-                <div style="display: flex; flex-direction: row; align-items: center"> <span class="material-icons-outlined" style="font-size: 16px">
+                <div target_id="menu_taged" class="menu_content" style="display: flex; flex-direction: row; align-items: center;padding-top: 10px;font-weight: lighter"> <span class="material-icons-outlined" style="font-size: 16px">
 assignment_ind
 </span>태그됨 </div>
             </div>
             <!-- 하단 컨텐츠 -->
-            <div style="display: flex; flex-direction: column">
+            <div id="menu_feed" class="menu_content_box" style="display: flex; flex-direction: column">
+                {% for feed in feed_list %}
+                    <div style="display: flex; flex-direction: row">
+                        {% for row_feed in feed.row_feed_list %}
+                            <div>
+                                <img class="row_feed" src="{% get_media_prefix %}{{ row_feed.image }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="menu_bookmark" class="menu_content_box" style="display: none; flex-direction: column">
+                {% for feed in bookmark_feed_list %}
+                    <div style="display: flex; flex-direction: row">
+                        {% for row_feed in feed.row_bookmark_feed_list %}
+                            <div>
+                                <img class="row_feed" src="{% get_media_prefix %}{{ row_feed.image }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="menu_taged" class="menu_content_box" style="display: none; flex-direction: column">
                 {% for feed in feed_list %}
                     <div style="display: flex; flex-direction: row">
                         {% for row_feed in feed.row_feed_list %}
@@ -432,10 +453,6 @@ assignment_ind
         closeModal();
     });
 
-    $('#move_home').on("click", () => {
-        location.replace('/');
-    });
-
     function closeModal() {
         $('.modal').css({
             display: 'none'
@@ -555,6 +572,31 @@ assignment_ind
             }
         })
     };
+
+    $('.menu_content').click(function (event){
+        $('.menu_content').css({
+            'border-top': 'none',
+            'font-weight' : 'lighter'
+        });
+        $(this).css({
+            'border-top' : '1px solid gray',
+            'font-weight' : 'bold'
+        });
+
+        $('.menu_content_box').css({
+            display : 'none'
+        });
+
+        let target_id = $(this).attr('target_id')
+
+        $('#'+target_id).css({
+            display : 'flex'
+        });
+    });
+
+    $('.go_home').on("click", () => {
+        location.replace('/');
+    });
 
     function ajaxFileUpload() {
         // 업로드 버튼이 클릭되면 파일 찾기 창을 띄운다.
