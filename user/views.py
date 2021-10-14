@@ -3,7 +3,9 @@ from rest_framework.views import APIView
 from .models import User
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.response import Response
-
+from uuid import uuid4
+import os
+from jinstagram.settings import MEDIA_ROOT
 
 class Login(APIView):
     def get(self, request):
@@ -61,3 +63,26 @@ class LogOut(APIView):
     def get(self, request):
         request.session.flush()
         return render(request, 'user/login.html')
+
+
+class UpdateProfile(APIView):
+    def post(self, request):
+        email = request.session.get('email', None)
+        if email is None:
+            return render(request, 'user/login.html')
+
+        user = User.objects.filter(email=email).first()
+        if user is None:
+            return render(request, 'user/login.html')
+
+        file = request.FILES['file']
+        uuid_name = uuid4().hex
+        save_path = os.path.join(MEDIA_ROOT, uuid_name)
+        with open(save_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        user.thumbnail = uuid_name
+        user.save()
+
+        return Response(status=200)

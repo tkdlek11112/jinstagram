@@ -223,9 +223,12 @@
                         <div style="font-size: 24px"> {{ user.user_id }} </div>
                         <div>
                             <button id="button_write_feed" type="button"
-                                    style="margin-left: 10px;font-size: 14px;width: 100px; border: 1px solid silver; background-color: transparent">
+                                    style="margin-left: 10px;font-size: 14px;width: 100px; border: 1px solid silver; background-color: transparent" onclick="ajaxFileUpload()">
                                 프로필 편집
                             </button>
+                            <input id="ajaxFile" type="file" onchange="ajaxFileChange()" name="profile" style="display: none">
+
+
                         </div>
                     </div>
                     <div class="mb-3" style="display: flex; flex-direction: row; margin-right: 100px">
@@ -552,6 +555,35 @@ assignment_ind
             }
         })
     };
+
+    function ajaxFileUpload() {
+        // 업로드 버튼이 클릭되면 파일 찾기 창을 띄운다.
+        jQuery("#ajaxFile").click();
+    }
+
+    function ajaxFileChange() {
+        // 파일이 선택되면 업로드를 진행한다.
+        ajaxFileTransmit();
+    }
+
+    function ajaxFileTransmit() {
+        var form = jQuery("ajaxFrom")[0];
+        var formData = new FormData(form);
+        formData.append("file", jQuery("#ajaxFile")[0].files[0]);
+
+        jQuery.ajax({
+              url : "{% url 'profile_update' %}"
+            , type : "POST"
+            , processData : false
+            , contentType : false
+            , data : formData
+            , success:function(json) {
+                var obj = JSON.parse(json);
+            }
+        });
+    }
+
+
 </script>
 
 
