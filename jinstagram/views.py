@@ -21,7 +21,7 @@ class Main(APIView):
             is_like = FeedLike.objects.filter(feed_id=feed.id, is_like=True, email=email).exists()
             is_bookmarked = Bookmark.objects.filter(email=email, is_bookmarked=True, feed_id=feed.id).exists()
             reply_list = Reply.objects.filter(feed_id=feed.id)
-            profile_image = User.objects.filter(email=email).first().thumbnail or 'default_profile.jpg'
+            profile_image = User.objects.filter(email=feed.email).first().thumbnail or 'default_profile.jpg'
             feed_list.append(dict(
                 id=feed.id,
                 profile_image=profile_image,
