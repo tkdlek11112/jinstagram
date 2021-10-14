@@ -178,7 +178,7 @@
     <!-- 상단 내비게이션 바 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom"
          style="width: 100%;height: 50px;position: fixed;z-index: 9999">
-        <div class="container">
+        <div class="container" style="min-width: 800px">
             <img style="height: 30px; object-fit: contain"
                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
             <input class="form-control" style="width: 200px" type="search" placeholder="Search" aria-label="Search">
@@ -558,7 +558,7 @@ assignment_ind
 
     function ajaxFileUpload() {
         // 업로드 버튼이 클릭되면 파일 찾기 창을 띄운다.
-        jQuery("#ajaxFile").click();
+        $("#ajaxFile").click();
     }
 
     function ajaxFileChange() {
@@ -567,18 +567,22 @@ assignment_ind
     }
 
     function ajaxFileTransmit() {
-        var form = jQuery("ajaxFrom")[0];
-        var formData = new FormData(form);
-        formData.append("file", jQuery("#ajaxFile")[0].files[0]);
+        var formData = new FormData();
+        formData.append("file", $("#ajaxFile")[0].files[0]);
 
-        jQuery.ajax({
+        $.ajax({
               url : "{% url 'profile_update' %}"
             , type : "POST"
             , processData : false
             , contentType : false
             , data : formData
-            , success:function(json) {
-                var obj = JSON.parse(json);
+            , dataType: "json"
+            , success:function(obj) {
+                let uuid = obj.uuid;
+                console.log(uuid);
+                $('.profile_img').attr('src','{% get_media_prefix %}' + uuid);
+                console.log($('.profile_img').attr('src'));
+
             }
         });
     }

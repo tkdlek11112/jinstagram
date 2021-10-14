@@ -20,9 +20,10 @@ class Main(APIView):
             like_count = FeedLike.objects.filter(feed_id=feed.id, is_like=True).count()
             is_like = FeedLike.objects.filter(feed_id=feed.id, is_like=True, email=email).exists()
             reply_list = Reply.objects.filter(feed_id=feed.id)
+            profile_image = User.objects.filter(email=email).first().thumbnail or 'default_profile.jpg'
             feed_list.append(dict(
                 id=feed.id,
-                profile_image=feed.profile_image,
+                profile_image=profile_image,
                 user_id=feed.user_id,
                 image=feed.image,
                 content=feed.content,

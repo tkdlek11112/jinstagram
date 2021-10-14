@@ -76,6 +76,9 @@ class UpdateProfile(APIView):
             return render(request, 'user/login.html')
 
         file = request.FILES['file']
+        if file is None:
+            return Response(status=500)
+        
         uuid_name = uuid4().hex
         save_path = os.path.join(MEDIA_ROOT, uuid_name)
         with open(save_path, 'wb+') as destination:
@@ -85,4 +88,4 @@ class UpdateProfile(APIView):
         user.thumbnail = uuid_name
         user.save()
 
-        return Response(status=200)
+        return Response(status=200, data=dict(uuid=uuid_name))
